@@ -21,6 +21,7 @@ function App() {
     if (downRef2?.current) {
       downRef2.current.scrollIntoView({ behavior: 'smooth' });
     }
+    id = parseInt(id, 10);
     setEventId(id);
     console.log("event" + id);
   };
@@ -129,8 +130,8 @@ function App() {
               {/* LIST OF EVENTS */}
 {result && (
                 <div className='flex flex-col gap-y-[14px] '>
-                {result.map(element => (
-<button key={element.id} onClick={() =>scrollDown2(element.id) } >
+                {result.map((element, i) => (
+<button key={i} onClick={() =>scrollDown2(i) } >
 <div  className='h-[99px] w-full bg-black rounded-[9px] text-white  flex items-center justify-around px-[45px] '>
                 <p className='font-normal text-[28px]'> {element.name} </p>
                 <p className='font-normal text-[28px]'>{formatDate(element.date)} </p>
@@ -161,14 +162,18 @@ function App() {
             <p className='font-normal text-[28px]  ' >MyMusicFestival</p>    
             </div>
             <div className='h-[24px] bg-black w-screen'></div>
-            <div className='pl-[188px] h-screen w-full bg-yellow-400 pr-[60px] pb-[57px] border-2 flex flex-col text-black'>
-              <h1 className='font-semibold text-[67px] '>Coldplay</h1>
-              <p className='text-[28px] '>...</p>
-              <div className='h-[68px] bg-black w-screen'></div>
+            
+              
+
+{result.length > 0  && result[eventId] && (
+  <div className='pl-[188px] h-screen w-full bg-yellow-400 pr-[60px] pb-[57px] border-2 flex flex-col text-black'>    
+  <h1 className='font-semibold text-[67px] '>{result ? result[eventId].artist : ''}</h1>
+                <p className='text-[28px] '> {result ? result[eventId].description : ''}</p>
+                <div className='h-[68px] bg-black w-screen'></div>
               {/* split into two */}
               <div className='w-full h-full flex border-2'>
-                <div className='flex items-center h-full border-2 '>
-                <img src='/coldplay.jpg' className='w-[363px] h-[246px] ' />
+                <div className='flex items-end pt-6 border-2 w-[363px] h-[246px] '>
+                <img src={result[eventId].imgUrl} className='w-full h-full object-contain' />
                 </div>
                 <div className='w-full h-full border-2 flex flex-col items-end'>
 <div className='flex'>
@@ -179,8 +184,8 @@ function App() {
                   </div>
                   <div className='w-[29px] h-full bg-black '></div>
                   <div className='flex flex-col items-end justify-center'>
-                    <p className='font-normal text-[67px] '>Abu Dhabi</p>
-                    <p className='font-normal text-[67px]'>50 $</p>
+                    <p className='font-normal text-[67px] '>{result ? result[eventId].city : ''}</p>
+                    <p className='font-normal text-[67px]'>{result ? result[eventId].ticketPrice : ''} $</p>
                   </div>
 </div>
 <h1 className='text-[67px] font-normal underline '>BOOK NOW</h1>
@@ -188,6 +193,8 @@ function App() {
               </div>
                             {/* split into two */}
               </div>
+)}
+              
                                         </div>
 {/* Show details */}
 
