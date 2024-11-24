@@ -11,6 +11,10 @@ function App() {
   const downRef2 = useRef(null);
   const [eventId, setEventId] = useState(null);
 
+  const topRef1 = useRef(null);
+  const topRef2 = useRef(null);
+
+
   const scrollDown1 = () => {
     if (downRef1?.current) {
       downRef1.current.scrollIntoView({ behavior: 'smooth' });
@@ -69,12 +73,26 @@ function App() {
   };
 
 
+  
+  const scrollToTop1 = () => {
+    if (topRef1?.current) {
+      topRef1.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
+  };
+
+  const scrollToTop2 = () => {
+    if (topRef2?.current) {
+      topRef2.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
 
 
   return (
-    <body className='font-inter'>
+    <body className='font-inter w-screen h-screen overflow-hidden'>
       {/* PAGE 1 */}
-          <div className='w-screen h-screen pt-[181px] px-[141px] pb-[142px]'>
+          <div className='w-screen h-screen pt-[181px] px-[141px] pb-[142px] overflow-hidden' ref={topRef1}>
 
       {/* Main stuff */}
     <div className='  w-full h-full'>
@@ -115,28 +133,28 @@ function App() {
     </div>
           {/* PAGE 1 */}
           {/* PAGE 2 */}
-          <div className='w-screen h-screen '>
-            <div className='w-screen h-[88px] bg-purple-500 flex items-center justify-between pl-[29px] pt-[23px] pr-[60px] ' ref={downRef1}>
-            <img src="/reject.png" className='invert w-[43px] h-[61px] border-2' />         
+          <div className='w-screen h-screen ' ref={topRef2}>
+            <div className='w-screen h-[88px] flex items-center justify-between pl-[29px] pt-[23px] pr-[60px] ' ref={downRef1}>
+            <img src="/reject.png" className=' w-[43px] h-[61px] cursor-pointer' onClick={scrollToTop1} />         
             <p className='font-normal text-[28px]  '>MyMusicFestival</p>    
             </div>
-            <div className='h-[39px] w-screen bg-black '></div>
-            <div className='w-screen h-full px-[129px]  bg-yellow-400 '>
+            <div className='h-[39px] w-screen  '></div>
+            <div className='w-screen h-full px-[129px]  '>
 {result.length > 0 && (
                 <h1 className='font-normal '>Search results for “{result ? result[0].artist : ''}”</h1>
 
 )}
-              <div className='h-[59px] w-full bg-red-700 '></div>
+              <div className='h-[59px] w-full '></div>
               {/* LIST OF EVENTS */}
 {result && (
                 <div className='flex flex-col gap-y-[14px] '>
                 {result.map((element, i) => (
 <button key={i} onClick={() =>scrollDown2(i) } >
-<div  className='h-[99px] w-full bg-black rounded-[9px] text-white  flex items-center justify-around px-[45px] '>
-                <p className='font-normal text-[28px]'> {element.name} </p>
+<div  className='h-[99px] w-full bg-black rounded-[9px] text-white  flex items-center justify-between px-[45px] '>
+                <p className='font-normal text-[28px] w-[520px] flex justify-start '> {element.name} </p>
                 <p className='font-normal text-[28px]'>{formatDate(element.date)} </p>
-                <p className='font-normal text-[28px]'>{element.city} - {element.country} </p>
-                <p className='font-normal text-[28px]'>{element.ticketPrice} $ </p>
+                <p className='font-normal text-[28px] w-[250px] flex justify-end '>{element.city} - {element.country} </p>
+                <p className='font-normal text-[28px] w-[80px] flex justify-end '>{element.ticketPrice} $ </p>
               </div>
               {/* ......... */}
               {/* {showDetails && (
@@ -157,38 +175,38 @@ function App() {
 
       {/* Show details */}
       <div className='w-screen h-screen bg-white flex flex-col'>
-      <div className='w-screen h-[88px] bg-purple-500 flex items-center justify-between pl-[29px] pt-[23px] pr-[60px] '  ref={downRef2}>
-            <img src="/reject.png" className=' w-[43px] h-[61px] border-2' />         
+      <div className='w-screen h-[88px]  flex items-center justify-between pl-[29px] pt-[23px] pr-[60px] '  ref={downRef2}>
+            <img src="/reject.png" className=' w-[43px] h-[61px] cursor-pointer' onClick={scrollToTop2} />         
             <p className='font-normal text-[28px]  ' >MyMusicFestival</p>    
             </div>
-            <div className='h-[24px] bg-black w-screen'></div>
+            <div className='h-[24px] w-screen'></div>
             
               
 
 {result.length > 0  && result[eventId] && (
-  <div className='pl-[188px] h-screen w-full bg-yellow-400 pr-[60px] pb-[57px] border-2 flex flex-col text-black'>    
-  <h1 className='font-semibold text-[67px] '>{result ? result[eventId].artist : ''}</h1>
-                <p className='text-[28px] '> {result ? result[eventId].description : ''}</p>
-                <div className='h-[68px] bg-black w-screen'></div>
+  <div className='pl-[188px] h-screen w-full  pr-[60px] pb-[57px]  flex flex-col text-black'>    
+  <h1 className='font-semibold text-[67px]'>{result ? result[eventId].artist : ''}</h1>
+                <p className='text-[28px] '> {result ? result[eventId].description.substring(0,197)+'...' : ''}</p>
+                <div className='h-[68px] w-screen'></div>
               {/* split into two */}
-              <div className='w-full h-full flex border-2'>
-                <div className='flex items-end pt-6 border-2 w-[363px] h-[246px] '>
-                <img src={result[eventId].imgUrl} className='w-full h-full object-contain' />
+              <div className='w-full h-full flex  pr-[60px]'>
+                <div className='flex justify-start items-start pt-6 w-[363px] h-[246px] '>
+                <img src={result[eventId].imgUrl} className='object-contain' />
                 </div>
-                <div className='w-full h-full border-2 flex flex-col items-end'>
+                <div className='w-full h-full  flex flex-col items-end'>
 <div className='flex'>
-<div className='flex flex-col border-2 items-end justify-center gap-y-3 pt-4'>
+<div className='flex flex-col items-end justify-center gap-y-3 pt-4'>
                     <p className='font-normal text-[28px] '>Location/</p>
-                    <div className='h-[16px] bg-black w-full '></div>
+                    <div className='h-[16px] w-full '></div>
                     <p className='font-normal text-[28px]'>Price/</p>
                   </div>
-                  <div className='w-[29px] h-full bg-black '></div>
+                  <div className='w-[29px] h-full '></div>
                   <div className='flex flex-col items-end justify-center'>
                     <p className='font-normal text-[67px] '>{result ? result[eventId].city : ''}</p>
                     <p className='font-normal text-[67px]'>{result ? result[eventId].ticketPrice : ''} $</p>
                   </div>
 </div>
-<h1 className='text-[67px] font-normal underline '>BOOK NOW</h1>
+<h1 className='text-[67px] font-normal underline hover:bg-blue-600 cursor-pointer'>BOOK NOW</h1>
                 </div>
               </div>
                             {/* split into two */}
